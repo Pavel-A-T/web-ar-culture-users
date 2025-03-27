@@ -2,63 +2,61 @@ package com.tests;
 
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
-import com.tests.base.BaseTest;
-import org.junit.jupiter.api.*;
+import com.extentions.UIExtension;
+import com.google.inject.Inject;
+import com.pages.MainPage;
+import io.qameta.allure.Step;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.codeborne.selenide.Selenide.*;
-import static com.utils.BrowserConfig.getURL;
+import static com.codeborne.selenide.Selenide.$$;
+import static com.codeborne.selenide.Selenide.title;
 import static com.utils.Constants.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class NavigationMenuTest extends BaseTest {
-    @BeforeEach
-    public void run(TestInfo testInfo) {
-        testPassed = false;
-        open(getURL());
+@ExtendWith(UIExtension.class)
+public class NavigationMenuTest {
+  @Inject
+  private MainPage mainPage;
+
+  @Test
+  @Step("Проверка работы навигационного меню")
+  @DisplayName("Проверка работы навигационного меню")
+  public void navMenuTest() {
+    mainPage.open();
+    int menuSize = $$("ul.menu li a").size();
+    List<String> requiredTitles = Arrays.asList(MUSEUM, EXHIBIT, EXHIBITION, QUIZ);
+    for (int i = 0; i < menuSize; i++) {
+      String menuText = $$("ul.menu li a").get(i).text();
+      SelenideElement nav = $$("ul.menu li a").get(i);
+      if (nav.is(Condition.visible)) {
+        nav.click();
+      }
+      if (!requiredTitles.contains(menuText)) {
+        continue;
+      }
+      switch (menuText) {
+        case MUSEUM:
+          assertEquals(MUSEUM_HEADER, title(), "Заголовок некорректный.");
+          mainPage.open();
+          break;
+        case EXHIBITION:
+          assertEquals(EXHIBITION_HEADER, title(), "Заголовок некорректный.");
+          mainPage.open();
+          break;
+        case EXHIBIT:
+          assertEquals(EXHIBIT_HEADER, title(), "Заголовок некорректный.");
+          mainPage.open();
+          break;
+        case QUIZ:
+          assertEquals(QUIZ_HEADER, title(), "Заголовок некорректный.");
+          mainPage.open();
+          break;
+      }
     }
-    @AfterEach
-    public void tearDown(TestInfo testInfo) throws IOException {
-        String testName = testInfo.getDisplayName();
-        reportGenerator.logTestResult(testName, testPassed);
-    }
-    @Test
-    @DisplayName("Проверка работы навигационного меню")
-    public void navMenuTest() {
-        int menuSize = $$("ul.menu li a").size();
-        List<String> requiredTitles = Arrays.asList(MUSEUM, EXHIBIT, EXHIBITION, QUIZ);
-        for (int i = 0; i < menuSize; i++) {
-            String menuText = $$("ul.menu li a").get(i).text();
-            SelenideElement nav = $$("ul.menu li a").get(i);
-            if (nav.is(Condition.visible)) {
-                nav.click();
-            }
-            if (!requiredTitles.contains(menuText)) {
-                continue;
-            }
-            switch (menuText) {
-                case MUSEUM:
-                    assertEquals(MUSEUM_HEADER, title(), "Заголовок некорректный.");
-                    open(getURL());
-                    break;
-                case EXHIBITION:
-                    assertEquals(EXHIBITION_HEADER, title(), "Заголовок некорректный.");
-                    open(getURL());
-                    break;
-                case EXHIBIT:
-                    assertEquals(EXHIBIT_HEADER, title(), "Заголовок некорректный.");
-                    open(getURL());
-                    break;
-                case QUIZ:
-                    assertEquals(QUIZ_HEADER, title(), "Заголовок некорректный.");
-                    open(getURL());
-                    break;
-            }
-        }
-        testPassed = true;
-        open(getURL());
-    }
+  }
 }

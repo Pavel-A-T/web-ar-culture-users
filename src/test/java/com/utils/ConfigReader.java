@@ -1,26 +1,25 @@
 package com.utils;
 
-import java.io.IOException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
-import java.util.Properties;
+import java.util.Map;
 
 public class ConfigReader {
-    private static Properties properties = new Properties();
-    static {
-        try (InputStream input = ConfigReader.class.getClassLoader().getResourceAsStream("application.properties")) {
-            if (input == null) {
-                throw new RuntimeException("Sorry, unable to find application.properties");
-            }
-            try (InputStreamReader reader = new InputStreamReader(input, StandardCharsets.UTF_8)) {
-                properties.load(reader);
-            }
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
+  static String fileName = "config.json";
+
+  public static String getProperty(String property) {
+    // Создаем ObjectMapper для парсинга JSON
+    ObjectMapper objectMapper = new ObjectMapper();
+    // Получаем InputStream для файла из resources
+    InputStream inputStream = ConfigReader.class.getClassLoader().getResourceAsStream(fileName);
+    try {
+      // Преобразуем JSON в Map<String, Object>
+      Map<String, Object> configMap = objectMapper.readValue(inputStream, Map.class);
+      return configMap.get(property).toString();
     }
-    public static String get(String key) {
-        return properties.getProperty(key);
+    catch (Exception e) {
+      return null;
     }
+  }
 }

@@ -3,53 +3,41 @@ package com.tests;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
+import com.extentions.UIExtension;
+import com.google.inject.Inject;
 import com.pages.SearchPage;
-import com.tests.base.BaseTest;
-import org.junit.jupiter.api.*;
+import io.qameta.allure.Step;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-import java.io.IOException;
-
-import static com.codeborne.selenide.Selenide.back;
-import static com.codeborne.selenide.Selenide.open;
-import static com.utils.BrowserConfig.getURL;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
-public class SearchTest extends BaseTest {
-    public static SearchPage searchPage = null;
+@ExtendWith(UIExtension.class)
+public class SearchTest {
+    @Inject
+    public SearchPage searchPage;
 
-    @BeforeAll
-    public static void start() {
-        searchPage = new SearchPage();
-    }
-    @BeforeEach
-    public void run(TestInfo testInfo) {
-        open(getURL());
-        testPassed = false;
-    }
-    @AfterEach
-    public void tearDown(TestInfo testInfo) throws IOException {
-        String testName = testInfo.getDisplayName();
-        reportGenerator.logTestResult(testName, testPassed);
-    }
     @Test
+    @Step("Проверка работы поиска на примере поиска: \"Тихвинский музей\"")
     @DisplayName("Проверка работы поиска на примере поиска: \"Тихвинский музей\"")
     public void searchTest() {
         String searchString = "Тихвинский музей";
         String result = "Результаты поиска";
-        searchPage.search.click();
-        searchPage.searchInput.setValue(searchString);
-        searchPage.findElement.click();
-        assertEquals(searchString, searchPage.title.getText(), "Названия не совпадают!");
-        assertEquals(result, searchPage.result.getText(), "Названия не совпадают!");
-        testPassed = true;
-        open(getURL());
+        searchPage.open("");
+        searchPage.getSearch().click();
+        searchPage.getSearchInput().setValue(searchString);
+        searchPage.getFindElement().click();
+        assertEquals(searchString, searchPage.getTitle().getText(), "Названия не совпадают!");
+        assertEquals(result, searchPage.getResult().getText(), "Названия не совпадают!");
     }
-
     @Test
+    @Step("Возможность просмотра различного контента на странице")
     @DisplayName("Возможность просмотра различного контента на странице")
     public void cultureObjectPageLoadTest() {
-        for (SelenideElement element : searchPage.listObjects) {
+      searchPage.open("");
+      for (SelenideElement element : searchPage.getListObjects()) {
             if (!element.is(Condition.visible)) {
                 continue;
             }
@@ -59,8 +47,6 @@ public class SearchTest extends BaseTest {
             String actualValue = searchPage.getElement(expected).getText();
             assertEquals(expected, actualValue, "Названия не совпадают!");
             assertNotEquals(title, Selenide.title(), "Названия вкладок web страницы не должны совпадать!");
-            testPassed = true;
-            back();
         }
     }
 }

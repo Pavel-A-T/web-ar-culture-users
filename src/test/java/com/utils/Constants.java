@@ -4,10 +4,6 @@ import java.util.Arrays;
 import java.util.List;
 
 public class Constants {
-    public static final String CHROME = "chrome";
-    public static final String FIREFOX = "firefox";
-    public static final String SHORT_NAME = "test_Selenide";
-    public static final String EDIT_NAME = "test_Selenide_was_edited";
     public static final String MAIN_HEADER = "Артефакт - гид по музеям России. Artefact - цифровая платформа интерактивных гидов с технологией дополнительной реальности. Нацпроект Минкультуры России";
     public static final String MUSEUM_HEADER = "Музеи России. Актуальные выставки, фото экспонатов в хорошем качестве, коллекции, описания, афиша, адреса. Artefact - Нацпроект Минкультуры России";
     public static final String EXHIBITION_HEADER = "Выставки в России - описания, фото экспонатов в хорошем качестве, места проведения, даты, адреса. Официальный сайт Artefact";

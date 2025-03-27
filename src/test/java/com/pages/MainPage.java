@@ -1,96 +1,144 @@
 package com.pages;
 
 import com.codeborne.selenide.CollectionCondition;
-import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
-import org.openqa.selenium.By;
-import org.openqa.selenium.support.FindBy;
+import lombok.Getter;
+import lombok.Setter;
 
-import java.util.List;
-
-import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.*;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
-public class MainPage {
-    @FindBy(css = ".cookies_accept")
-    public static SelenideElement cookieAcceptButton;
-    @FindBy(xpath = "//nav")
-    public static SelenideElement nav;
-    @FindBy(xpath = "//h1")
-    public static SelenideElement header;
-    @FindBy(xpath = "//a[@href=\"/auth/local\" and contains(text(), \"Войти \")]")
-    public SelenideElement enter;
-    @FindBy(xpath = "//a[@href=\"http://culture.ru\"]")
-    public SelenideElement culture;
-    @FindBy(xpath = "//div[contains(@class,\"footer_columns\")]/div/a")
-    public List<SelenideElement> footerLinks;
-    @FindBy(xpath = "//div[contains(@class,\"socials_block\")]/div/a")
-    public List<SelenideElement> socialIcons;
-    @FindBy(xpath = "//div[contains(@class,\"socials_block\")]")
-    public SelenideElement socialBlock;
-    @FindBy(xpath = "//div[contains(@class,\"send_subscription_email\")]")
-    public SelenideElement subscription;
-    @FindBy(xpath = "//input[contains(@type,\"email\")]")
-    public SelenideElement email;
-    @FindBy(xpath = "//div[@id=\"subscription_info_popup\"]")
-    public SelenideElement popup;
-    @FindBy(xpath = "//div[@id=\"subscription_error_popup\"]")
-    public SelenideElement errorPopup;
-    @FindBy(xpath = "//div[contains(@class, \"nav_stores_wrapper\")]")
-    public SelenideElement navStoresWrapper;
-    @FindBy(xpath = "//div[contains(@class,\"local\")]")
-    SelenideElement local;
-    @FindBy(xpath = "//li[contains(@class,\"about_project_menu\")]")
-    SelenideElement project;
-    @FindBy(xpath = "//a[contains(text(),\"Авторы\")]")
-    SelenideElement author;
-    @FindBy(xpath = "//a[contains(@class,\"listing_block\")]")
-    List<SelenideElement> listingBlock;
-    @FindBy(xpath = "//div[contains(@id,\"audio_play\")]")
-    public SelenideElement play;
-    @FindBy(xpath = "//div[contains(@id,\"audio_pause\")]")
-    public SelenideElement pause;
-    @FindBy(xpath = "//div[contains(@id,\"audio_time\")]")
-    public SelenideElement audioTimer;
-    @FindBy(xpath = "//div[contains(@class,\"like_wrapper\")]")
-    public SelenideElement like;
-    @FindBy(xpath = "//div[contains(@class,\"add_like\")]/span")
-    public SelenideElement countLikes;
-    @FindBy(xpath = "//ul[contains(@class,\"menu\")]/li/a[contains(@href,\"/ru/museums\") and text()=\"Музеи\"]")
-    SelenideElement museum;
-    @FindBy(xpath = "//a[contains(@class,\"listing_block\")]")
-    List<SelenideElement> museums;
-    @FindBy(xpath = "//a[contains(text(),\"Экспонаты\")]")
-    SelenideElement exhibits;
-    @FindBy(xpath = "//a[contains(text(), \"С аудиогидом\")]")
-    SelenideElement audioGide;
+@Getter
+@Setter
+public class MainPage extends AbsBasePage<MainPage> {
+  public SelenideElement cookieAcceptButton = $(".cookies_accept");
+  private SelenideElement nav = $x("//nav");
+  private SelenideElement header = $x("//h1");
+  private SelenideElement enter = $x("//a[@href=\"/auth/local\" and contains(text(), \"Войти \")]");
+  private SelenideElement culture = $x("//a[@href=\"http://culture.ru\"]");
+  private ElementsCollection footerLinks = $$x("//div[contains(@class,\"footer_columns\")]/div/a");
+  private ElementsCollection socialIcons = $$x("//div[contains(@class,\"socials_block\")]/div/a");
+  private SelenideElement socialBlock = $x("//div[contains(@class,\"socials_block\")]");
+  private SelenideElement subscription = $x("//div[contains(@class,\"send_subscription_email\")]");
+  private SelenideElement email = $x("//input[contains(@type,\"email\")]");
+  private SelenideElement popup = $x("//div[@id=\"subscription_info_popup\"]");
+  private SelenideElement errorPopup = $x("//div[@id=\"subscription_error_popup\"]");
+  private SelenideElement navStoresWrapper = $x("//div[contains(@class, \"nav_stores_wrapper\")]");
+  private SelenideElement local = $x("//div[contains(@class,\"local\")]");
+  private SelenideElement project = $x("//li[contains(@class,\"about_project_menu\")]");
+  private SelenideElement author = $x("//a[contains(text(),\"Авторы\")]");
+  private ElementsCollection listingBlock = $$x("//a[contains(@class,\"listing_block\")]");
+  private SelenideElement play = $x("//div[contains(@id,\"audio_play\")]");
+  private SelenideElement pause = $x("//div[contains(@id,\"audio_pause\")]");
+  private SelenideElement audioTimer = $x("//div[contains(@id,\"audio_time\")]");
+  private SelenideElement like = $x("//div[contains(@class,\"like_wrapper\")]");
+  private SelenideElement likeBtn = $x("//div[contains(@class,\"add_like_btn\") and contains(@class,\"active\"]");
+  private SelenideElement countLikes = $x("//div[contains(@class,\"add_like\")]/span");
+  private SelenideElement museum = $x("//ul[contains(@class,\"menu\")]/li/a[contains(@href,\"/ru/museums\") and text()=\"Музеи\"]");
+  private ElementsCollection museums = $$x("//a[contains(@class,\"listing_block\")]");
+  private SelenideElement exhibits = $x("//a[contains(text(),\"Экспонаты\")]");
+  private SelenideElement audioGide = $x("//a[contains(text(), \"С аудиогидом\")]");
+  private SelenideElement all = $x("//div/a[contains(text(),\"Посмотреть все\")]");
+  private SelenideElement blockSort = $x("//div[contains(@id,\"blocks_sort\")]");
+  private SelenideElement sortAsc = $x("//div[contains(@id,\"blocks_sort_list\")]/div[contains(text(),\"по названию (А-Я)\")]");
+  private SelenideElement sortDesc = $x("//div[contains(@id,\"blocks_sort_list\")]/div[contains(text(),\"по названию (Я-А)\")]");
+  private SelenideElement readButton = $x("//div[contains(@id,\"show_full_article_button\")]");
+  private SelenideElement moreMaterials = $x("//div[contains(@class,\"subjects_links_right\")]/a[contains(text(),\"С доп\")]");
 
-
-    public void changeLocal() {
-        local.click();
+  private boolean checkButton(int exhibit) {
+    exhibits.click();
+    moreMaterials.click();
+    ElementsCollection list = $$x("//div[contains(@class,\"blocks_list_wrapper\")]/a[contains(@class, \"listing_block\")]");
+    ((ElementsCollection) list).shouldBe(CollectionCondition.sizeGreaterThan(1));
+    if (exhibit < list.size() && exhibit >= 0) {
+      SelenideElement element = list.get(exhibit);
+      element.hover();
+      element.click();
+    } else {
+      return false;
     }
+    readButton.scrollTo();
+    readButton.click();
+    return true;
+  }
 
-    public String getLikes() {
-        museum.click();
-        List<SelenideElement> blocks = $$(By.xpath("//div[contains(@class,\"blocks_list_wrapper\")]"));
-        SelenideElement mus = blocks.get(0).$(By.xpath("./a"));
-        mus.click();
-        like.click();
-        return countLikes.getText().trim();
+  public void changeLocal() {
+    local.click();
+  }
+
+  public String getLikes() {
+    museum.click();
+    ElementsCollection blocks = $$x("//div[contains(@class,\"blocks_list_wrapper\")]");
+    SelenideElement mus = blocks.get(0).$x("./a");
+    mus.click();
+    like.click();
+    return countLikes.getText().trim();
+  }
+
+  public boolean disLike() {
+    museum.click();
+    ElementsCollection blocks = $$x("//div[contains(@class,\"blocks_list_wrapper\")]");
+    SelenideElement mus = blocks.get(0).$x("./a");
+    mus.click();
+    ElementsCollection list = $$x("//div[contains(@class,\"add_like_btn\") and contains(@class,\"active\")]");
+    if (list.size() > 0) {
+      like.click();
     }
+    return $$x("//div[contains(@class,\"add_like_btn\") and contains(@class,\"active\")]").size() == 0;
+  }
 
-    public List<SelenideElement> getAudioGid() {
-        exhibits.click();
-        audioGide.click();
-        List<SelenideElement> list = $$(By.xpath("//div[contains(@class,\"blocks_list_wrapper\")]/a[contains(@class, \"listing_block\")]"));
-        ((ElementsCollection) list).shouldBe(CollectionCondition.sizeGreaterThan(1));
-        return list;
+  public ElementsCollection getAudioGid() {
+    exhibits.click();
+    audioGide.click();
+    ElementsCollection list = $$x("//div[contains(@class,\"blocks_list_wrapper\")]/a[contains(@class, \"listing_block\")]");
+    ((ElementsCollection) list).shouldBe(CollectionCondition.sizeGreaterThan(1));
+    return list;
+  }
+
+  public void getExhibits() {
+    exhibits.click();
+    all.scrollTo();
+    all.click();
+  }
+
+  public void getPagination(String page) {
+    SelenideElement element = $x("//div/a[contains(@href,\"" + page + "\")]");
+    element.click();
+  }
+
+  public ElementsCollection getSortAscExhibits(String sort) {
+    getExhibits();
+    blockSort.scrollTo();
+    blockSort.click();
+    if (sort.equalsIgnoreCase("asc")) {
+      sortAsc.click();
+    } else {
+      sortDesc.click();
     }
+    ElementsCollection list = $$x("//div[contains(@class,\"blocks_list_wrapper\")]/a[contains(@class, \"listing_block\")]/div/div/div[contains(@class, \"listing_block_title\")]");
+    list.shouldBe(CollectionCondition.sizeGreaterThan(1));
+    return list;
+  }
 
-
-    public MainPage() {
-        page(this);
+  public boolean checkButtonRead(int exhibit) {
+    if (checkButton(exhibit)) {
+      readButton.scrollTo();
+      if (readButton.getText().equalsIgnoreCase("скрыть")) {
+        return true;
+      }
     }
+    return false;
+  }
+
+  public boolean checkHideButton(int exhibit) {
+    if (checkButton(exhibit)) {
+      readButton.scrollTo();
+      readButton.click();
+      readButton.scrollTo();
+      if (readButton.getText().equalsIgnoreCase("читать дальше")) {
+        return true;
+      }
+    }
+    return false;
+  }
 }
